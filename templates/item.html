@@ -1,0 +1,47 @@
+<html>
+
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.css')}}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+<div class="container">
+	<div class "row">
+		<div class = "col-md-12">
+			<h1>Item</h1>
+		</div>
+	</div>
+
+	<div class ="row">
+		<div class = "col-md-12">	
+			<div class = 'flash'>
+				<h3> FLASH TEXT WILL GO HERE </h3>
+				{% with messages = get_flashed_messages() %}
+				{% if messages %}
+
+				<ul>
+					{% for message in messages %}
+			  		<li><strong>{{message}}</strong></li>
+			  		{% endfor %}
+				</ul>
+				{% endif %}
+				{% endwith %}
+			</div>
+		</div>
+	</div>
+
+	<div class = "row">
+		<div class="col-md-12"><h4>Details</h4>
+		</div>
+		<div class="col-md-4">
+			{{item.name}}
+			{{item.description}}
+		</div>
+
+	</div>
+	
+</div>
+</body>
+
+</html>

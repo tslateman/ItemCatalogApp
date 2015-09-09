@@ -1,0 +1,64 @@
+<html>
+
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.css')}}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+<div class="container">
+	<div class "row">
+		<div class = "col-md-12">
+			<h1>Catalog</h1>
+		</div>
+	</div>
+
+	<div class ="row">
+		<div class = "col-md-12">	
+			<div class = 'flash'>
+				<h3> FLASH TEXT WILL GO HERE </h3>
+				{% with messages = get_flashed_messages() %}
+				{% if messages %}
+
+				<ul>
+					{% for message in messages %}
+			  		<li><strong>{{message}}</strong></li>
+			  		{% endfor %}
+				</ul>
+				{% endif %}
+				{% endwith %}
+			</div>
+		</div>
+	</div>
+
+	<div class = "row">
+		<div class"col-md-6">
+			<a href="{{url_for('newItem')}}" > <h3> Create a New Item </h3> </a>
+			<hr>
+		</div>
+	</div>
+	<div class = "row">
+		<div class="col-md-12"><h4>Categories:</h4>
+		</div>
+		{% for c in catalog %}
+		<div class="col-md-4">
+			<a href = "{{url_for('showCategory', category_id = c.id)}}"> <p>{{c.category}}</p></a>
+		</div>
+		{% endfor %}
+
+	</div>
+	<div class = "row">
+		<div class="col-md-12"><hr><h4>Items:</h4>
+		</div>
+		{% for item in items %}
+		<div class="col-md-4">
+			<a href = "{{url_for('showItem', category_id = item.catalog_id, item_id = item.id)}}"> <p>{{item.name}}</p></a>
+		</div>
+		{% endfor %}
+	</div>
+
+
+</div>
+</body>
+
+</html>
