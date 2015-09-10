@@ -6,27 +6,40 @@
 </head>
 
 <body>
-
-<h1>New Item</h1>
-
-<form action="#" method = 'post'>
-
-
-	<dt>Name:</dt>
-		<dd><input type ='text' size='30' name='name' placeholder = 'Enter Name'></dd>
-	<dt>Description:</dt>
-		<dd><textarea name = 'description' rows='5' cols='40' placeholder = 'Enter Description'></textarea></dd>
-    <br>
-    <p>Category:>
-    <select class="form-control" name='category'>
-    	{% for row in catalog %}
-      		<option value="{{row.id}}">{{row.category}}</option>
-      	{% endfor %}
-	</select>
-<br>
-<input type='submit' value='Create'>
-
-</form>
+<div class="page-header">
+  	<div class="container">
+  		<div class="row-fluid">
+          <h1>Item Catalog App</h1>
+      	</div>
+      	<div class="col-md-6">
+			<p>New Item Page<p>
+		</div>
+		<div class="col-md-4" align=right>
+			<button>Logout Button</button>
+		</div>
+  	</div>
+</div>
+<div class = "container">
+	<div class = "row">
+		<div class="col-md-6">
+			<form action="#" method = 'post'>
+				<dt>Name:</dt>
+					<dd><input type ='text' size='30' name='name' placeholder = 'Enter Name'></dd>
+				<dt>Description:</dt>
+					<dd><textarea name = 'description' rows='5' cols='40' placeholder = 'Enter Description'></textarea></dd>
+			    <br>
+			    <p><b>Category:</b><p>
+			    <select class="form-control" name='category'>
+			    	{% for row in catalog %}
+			      		<option value="{{row.id}}">{{row.category}}</option>
+			      	{% endfor %}
+				</select>
+			<br>
+			<input type='submit' value='Create'>
+			</form>
+		</div>	
+	</div>
+</div>
 
 </body>
 </html>

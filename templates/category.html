@@ -6,13 +6,20 @@
 </head>
 
 <body>
-<div class="container">
-	<div class "row">
-		<div class = "col-md-12">
-			<h1>Catalog</h1>
+<div class="page-header">
+  	<div class="container">
+  		<div class="row-fluid">
+          <h1>Item Catalog App</h1>
+      	</div>
+      	<div class="col-md-6">
+			<p>Category Page<p>
 		</div>
-	</div>
-
+		<div class="col-md-4" align=right>
+			<button>Login Button</button>
+		</div>
+  	</div>
+</div>
+<div class="container">
 	<div class ="row">
 		<div class = "col-md-12">	
 			<div class = 'flash'>
@@ -31,8 +38,8 @@
 	</div>
 
 	<div class = "row">
-		<div class"col-md-6">
-			<a href="{{url_for('newItem')}}" > <h3> Create a New Item </h3> </a>
+		<div class="col-md-6">
+			<a href="{{url_for('newItem')}}" > Create a New Item </a>
 			<hr>
 		</div>
 	</div>
@@ -53,6 +60,7 @@
 		<div class="col-md-4">
 			<a href = "{{url_for('showItem', category_id = item.catalog_id, item_id = item.id)}}"> <p>{{item.name}}</p></a>
 			<p><i>({{item.catalog.category}})</i></p>
+			<img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Aristotle_Altemps_Inv8575.jpg" alt="aristotle" height="220" width="180">
 		</div>
 		{% endfor %}
 	</div>

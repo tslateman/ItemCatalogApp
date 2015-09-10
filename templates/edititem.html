@@ -7,28 +7,43 @@
 
 <body>
 
-<h1> Edit Item </h1>
+<div class="page-header">
+  	<div class="container">
+  		<div class="row-fluid">
+          <h1>Item Catalog App</h1>
+      	</div>
+      	<div class="col-md-6">
+			<p>Edit Item Page<p>
+		</div>
+		<div class="col-md-4" align=right>
+			<button>Logout Button</button>
+		</div>
+  	</div>
+</div>
+
+<div class = "container">
+	<div class = "row">
+		<div class="col-md-6">
+			<form action="{{ url_for('editItem',item_id = item.id)}}" method = 'post'>
+				<dt>Name:</dt>
+					<dd><input type ='text' size='30' name='name' placeholder = '{{item.name }}'></dd>
+				<dt>Description:</dt>
+					<dd><textarea name = 'description' rows='5' cols='40' placeholder = '{{item.description }}'></textarea></dd>
+			    <br>
+			    <select class="form-control" name='category'>
+			    	{% for row in catalog %}
+			      		<option value="{{row.id}}">{{row.category}}</option>
+			      	{% endfor %}
+				</select>
+			<input type='submit' value='Edit'>
 
 
-<form action="{{ url_for('editItem',item_id = item.id)}}" method = 'post'>
+			<a href = '{{url_for('showCatalog')}}'> Cancel </a>
 
-
-	<dt>Name:</dt>
-		<dd><input type ='text' size='30' name='name' placeholder = '{{item.name }}'></dd>
-	<dt>Description:</dt>
-		<dd><textarea name = 'description' rows='5' cols='40' placeholder = '{{item.description }}'></textarea></dd>
-    <br>
-    <select class="form-control" name='category'>
-    	{% for row in catalog %}
-      		<option value="{{row.id}}">{{row.category}}</option>
-      	{% endfor %}
-	</select>
-<input type='submit' value='Edit'>
-
-
-<a href = '{{url_for('showCatalog')}}'> Cancel </a>
-
-</form>
+			</form>
+		</div>
+	</div>
+</div>
 </body>
 
 </html>

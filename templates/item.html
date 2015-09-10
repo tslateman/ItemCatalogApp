@@ -6,12 +6,23 @@
 </head>
 
 <body>
-<div class="container">
-	<div class "row">
-		<div class = "col-md-12">
-			<h1>Item</h1>
+
+<body>
+<div class="page-header">
+  	<div class="container">
+  		<div class="row-fluid">
+          <h1>Item Catalog App</h1>
+      	</div>
+      	<div class="col-md-6">
+			<p>Item Page<p>
 		</div>
-	</div>
+		<div class="col-md-4" align=right>
+			<button>Login Button</button>
+		</div>
+  	</div>
+</div>
+
+<div class="container">
 
 	<div class ="row">
 		<div class = "col-md-12">	
@@ -31,17 +42,39 @@
 	</div>
 
 	<div class = "row">
-		<div class="col-md-12"><h4>Details</h4>
+		<div class="col-md-12"><h2>Details</h2>
 		</div>
-		<div class="col-md-4">
-			<p>{{item.name}}</p>
-			<p>{{item.description}}</p>
-			<a href = "{{url_for('editItem', item_id = item.id)}}"> <p>Edit</p></a>
-			<a href = "{{url_for('deleteItem', item_id = item.id)}}"> <p>Delete</p></a>
+		<div class="col-md-12">
+			<p><b>Name:</b> {{item.name}}</p>
+			<p><b>Description:</b> {{item.description}}</p>
+			<a href = "{{url_for('editItem', item_id = item.id)}}"> <button>Edit</button></a>
+			<a href = "{{url_for('deleteItem', item_id = item.id)}}"> <button>Delete</button></a>
+			<!-- Trigger the modal with a button -->
+			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 		</div>
-
 	</div>
 	
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 </body>
 
