@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
-APPLICATION_NAME = "Restaurant Menu App"
+APPLICATION_NAME = "Item Catalog App"
 
 
 # Connect to Database and create database session
@@ -28,6 +28,12 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+
+@app.route('/catalog/items/JSON')
+def itemsJSON():
+    items = session.query(Item).all()
+    return jsonify(Items=[i.serialize for i in items])
 
 
 # Create anti-forgery state token
@@ -178,7 +184,8 @@ def gdisconnect():
 
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
-        return response
+        flash("Thanks! You've been logged Out")
+        return redirect(url_for('showCatalog'))
     else:
         # For whatever reason, the given token was invalid.
         response = make_response(
@@ -186,32 +193,39 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-
 # Show Catalog
 @app.route('/')
 @app.route('/catalog/')
 def showCatalog():
     catalog = session.query(Catalog).order_by(asc(Catalog.category))
     items = session.query(Item).all()
-    return render_template('catalog.html', items=items, catalog=catalog)
+    username = ""
+    if 'username' in login_session:
+        username = login_session['username']
+    return render_template('catalog.html', items=items, catalog=catalog,
+        username=username)
 
-
+# Create a new item
 @app.route('/catalog/newitem/', methods=['GET', 'POST'])
 def newItem():
+    username = "" 
     if 'username' not in login_session:
         return redirect('/login')
+    username = login_session['username']
     catalog = session.query(Catalog).order_by(asc(Catalog.category))
     if request.method == 'POST':
         newItem = Item(name=request.form['name'],
             description = request.form['description'],
         	user_id=login_session['user_id'],
-            catalog_id=request.form['category'])
+            catalog_id=request.form['category'],
+            img_url=request.form['img_url'])
         session.add(newItem)
         flash('New Item %s Successfully Created' % newItem.name)
         session.commit()
         return redirect(url_for('showCatalog'))
     else:
-        return render_template('newitem.html', catalog=catalog)
+        return render_template('newitem.html', catalog=catalog, 
+            username=username)
 
 # Show a category of items
 @app.route('/catalog/<int:category_id>/')
@@ -220,20 +234,28 @@ def showCategory(category_id):
     category = session.query(Catalog).filter_by(id=category_id).one()
     items = session.query(Item).filter_by(
         catalog_id=category_id).all()
+    username = ""
+    if 'username' in login_session:
+        username = login_session['username']
     return render_template('category.html', items=items, category=category,
-                            catalog=catalog)
+                            catalog=catalog, username=username)
 
 # Show item
 @app.route('/catalog/item/<int:item_id>')
 def showItem(item_id):
     catalog = session.query(Catalog).order_by(asc(Catalog.category))
     item = session.query(Item).filter_by(id=item_id).one()
-    return render_template('item.html', item=item, catalog=catalog)
-
+    username = ""
+    if 'username' in login_session:
+        username = login_session['username']
+    return render_template('item.html', item=item, catalog=catalog,
+                        username=username)
+# Edit item
 @app.route('/catalog/item/<int:item_id>/edit', methods=['GET', 'POST'])
 def editItem(item_id):
     if 'username' not in login_session:
         return redirect('/login')
+    username = login_session['username']
     editedItem = session.query(Item).filter_by(id=item_id).one()
     catalog = session.query(Catalog).order_by(asc(Catalog.category))
     if request.method == 'POST':
@@ -243,18 +265,22 @@ def editItem(item_id):
             editedItem.description = request.form['description']
         if request.form['category']:
             editedItem.catalog_id = request.form['category']
+        if request.form['img_url']:
+            editedItem.img_url = request.form['img_url']
         session.add(editedItem)
         session.commit()
         flash('Catalog Item Successfully Edited')
         return redirect(url_for('showItem', item_id=item_id))
     else:
-        return render_template('edititem.html', catalog=catalog, item=editedItem)
+        return render_template('edititem.html', catalog=catalog, item=editedItem,
+                            username=username)
 
 # Delete a menu item
 @app.route('/catalog/item/<int:item_id>/delete', methods=['GET', 'POST'])
 def deleteItem(item_id):
     if 'username' not in login_session:
         return redirect('/login')
+    username = login_session['username']
     itemToDelete = session.query(Item).filter_by(id=item_id).one()
     if request.method == 'POST':
         session.delete(itemToDelete)
@@ -262,7 +288,8 @@ def deleteItem(item_id):
         flash('Item Successfully Deleted')
         return redirect(url_for('showCatalog'))
     else:
-        return render_template('deleteItem.html', item=itemToDelete)
+        return render_template('deleteItem.html', item=itemToDelete,
+                            username=username)
 
 
 if __name__ == '__main__':

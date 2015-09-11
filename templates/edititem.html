@@ -16,7 +16,11 @@
 			<p>Edit Item Page<p>
 		</div>
 		<div class="col-md-4" align=right>
-			<button>Logout Button</button>
+  			{% if not username %}
+    		<button><a href="{{ url_for('showLogin') }}">log in</a></button>
+  			{% else %}
+    		<button><a href="{{ url_for('gdisconnect') }}">logout</button>
+			{% endif %}
 		</div>
   	</div>
 </div>
@@ -29,6 +33,8 @@
 					<dd><input type ='text' size='30' name='name' placeholder = '{{item.name }}'></dd>
 				<dt>Description:</dt>
 					<dd><textarea name = 'description' rows='5' cols='40' placeholder = '{{item.description }}'></textarea></dd>
+				<dt>Image URL:</dt>
+					<dd><input type ='text' size='30' name='img_url' placeholder = 'Enter Image URL'></dd>
 			    <br>
 			    <select class="form-control" name='category'>
 			    	{% for row in catalog %}
@@ -38,7 +44,7 @@
 			<input type='submit' value='Edit'>
 
 
-			<a href = '{{url_for('showCatalog')}}'> Cancel </a>
+			<a href = '{{url_for('showItem', item_id = item.id)}}'> Cancel </a>
 
 			</form>
 		</div>

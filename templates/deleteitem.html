@@ -6,15 +6,41 @@
 </head>
 
 <body>
-<h1> Are you sure you want to delete {{item.name}}? </h1>
 
-<form action="{{ url_for('deleteItem', item_id = item.id)}}" method = 'post'>
+<div class="page-header">
+  	<div class="container">
+  		<div class="row-fluid">
+          <h1>Item Catalog App</h1>
+      	</div>
+      	<div class="col-md-6">
+			<p>Delete Page<p>
+		</div>
+		<div class="col-md-4" align=right>
+  			{% if not username %}
+    		<button><a href="{{ url_for('showLogin') }}">log in</a></button>
+  			{% else %}
+    		<button><a href="{{ url_for('gdisconnect') }}">logout</button>
+			{% endif %}
+		</div>
+  	</div>
+</div>
 
-<input type='submit', value = 'Delete'>
+<div class = "container">
+	<div class = "row">
+		<div class="col-md-12">
+			<h3> Are you sure you want to delete {{item.name}}? </h3>
 
-</form>
+			<form action="{{ url_for('deleteItem', item_id = item.id)}}" method = 'post'>
 
-<a href = '{{url_for('showItem', item_id = item.id)}}'> Cancel </a>
+				<input type='submit', value = 'Delete'>
+
+				<a href = '{{url_for('showItem', item_id = item.id)}}'> Cancel </a>
+
+			</form>
+		</div>
+	</div>
+</div>
+
 </body>
 
 </html>

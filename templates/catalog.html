@@ -6,7 +6,6 @@
 </head>
 
 <body>
-
 <div class="page-header">
   	<div class="container">
   		<div class="row-fluid">
@@ -16,12 +15,15 @@
 			<p>Catalog Page<p>
 		</div>
 		<div class="col-md-4" align=right>
-			<button>Login Button</button>
-		</div>
+  			{% if not username %}
+    		<button><a href="{{ url_for('showLogin') }}">log in</a></button>
+  			{% else %}
+    		<button><a href="{{ url_for('gdisconnect') }}">logout</button>
+			{% endif %}
+  		</div>
   	</div>
 </div>
 <div class="container">
-
 	<div class ="row">
 		<div class = "col-md-12">	
 			<div class = 'flash'>
@@ -40,11 +42,13 @@
 	</div>
 
 	<div class = "row">
-		<div class"col-md-12">
+		<div class = "col-md-12">
 			<a href="{{url_for('newItem')}}" > Create a New Item </a>
 			<hr>
 		</div>
 	</div>
+
+	<!-- Display category options -->
 	<div class = "row">
 		<div class="col-md-12"><h4>Categories:</h4>
 		</div>
@@ -54,13 +58,16 @@
 		</div>
 		{% endfor %}
 	</div>
+
+	<!-- Display item options -->
 	<div class = "row">
 		<div class="col-md-12"><hr><h4>Items:</h4>
 		</div>
 		{% for item in items %}
 		<div class="col-md-4">
-			<p>{{item.name}}</p>
-			<img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Aristotle_Altemps_Inv8575.jpg" alt="aristotle" height="220" width="180">
+			<a href = "{{url_for('showItem', category_id = item.catalog_id, item_id = item.id)}}"> 
+			<p>{{item.name}}</a> <i>({{item.catalog.category}})</i> </p>
+			<img src="{{item.img_url}}" alt="catalog item image"  height="240" width="300">
 		</div>
 		{% endfor %}
 	</div>

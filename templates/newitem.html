@@ -15,7 +15,11 @@
 			<p>New Item Page<p>
 		</div>
 		<div class="col-md-4" align=right>
-			<button>Logout Button</button>
+  			{% if not username %}
+    		<button><a href="{{ url_for('showLogin') }}">log in</a></button>
+  			{% else %}
+    		<button><a href="{{ url_for('gdisconnect') }}">logout</a></button>
+			{% endif %}
 		</div>
   	</div>
 </div>
@@ -27,6 +31,8 @@
 					<dd><input type ='text' size='30' name='name' placeholder = 'Enter Name'></dd>
 				<dt>Description:</dt>
 					<dd><textarea name = 'description' rows='5' cols='40' placeholder = 'Enter Description'></textarea></dd>
+			    <dt>Image URL:</dt>
+					<dd><input type ='text' size='30' name='img_url' placeholder = 'Enter Image URL'></dd>
 			    <br>
 			    <p><b>Category:</b><p>
 			    <select class="form-control" name='category'>
