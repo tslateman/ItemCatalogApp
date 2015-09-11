@@ -64,6 +64,12 @@ After populating the database run the following command to start the app
 
 python catalog.py
 
+Then open a browser and navigate to "http://localhost:5000/"
+
+The JSON for the items is located at:
+
+http://localhost:5000//catalog/items/JSON
+
 -------------------------------------------------------------------
 
 Some of the code from this course was based on lessons taught in
