@@ -1,32 +1,5 @@
-<html>
-
-<head>
-	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.css')}}">
-	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-</head>
-
-<body>
-
-<body>
-<div class="page-header">
-  	<div class="container">
-  		<div class="row-fluid">
-          <h1>Item Catalog App</h1>
-      	</div>
-      	<div class="col-md-6">
-			<p>Item Page<p>
-		</div>
-		<div class="col-md-4" align=right>
-  			{% if not username %}
-    		<button><a href="{{ url_for('showLogin') }}">log in</a></button>
-  			{% else %}
-    		<button><a href="{{ url_for('gdisconnect') }}">logout</a></button>
-			{% endif %}
-		</div>
-  	</div>
-</div>
-
-<div class="container">
+{% extends "base.html" %}
+{% block content %}
 
 	<div class ="row">
 		<div class = "col-md-12">	
@@ -56,8 +29,4 @@
 		</div>
 	</div>
 
-</div>
-
-</body>
-
-</html>
+{% endblock %}

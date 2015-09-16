@@ -213,7 +213,7 @@ def showCatalog():
     if 'username' in login_session:
         username = login_session['username']
     return render_template('catalog.html', items=items, catalog=catalog,
-        username=username)
+        username=username, title='Catalog Page')
 
 # Create a new item
 @app.route('/catalog/newitem/', methods=['GET', 'POST'])
@@ -234,7 +234,7 @@ def newItem():
         return redirect(url_for('showCatalog'))
     else:
         return render_template('newitem.html', catalog=catalog, 
-            username=username)
+            username=username, title="New Item")
 
 # Show a category of items
 @app.route('/catalog/<int:category_id>/')
@@ -247,7 +247,8 @@ def showCategory(category_id):
     if 'username' in login_session:
         username = login_session['username']
     return render_template('category.html', items=items, category=category,
-                            catalog=catalog, username=username)
+                            catalog=catalog, username=username, 
+                            title='Category Page')
 
 # Show item
 @app.route('/catalog/item/<int:item_id>')
@@ -258,7 +259,7 @@ def showItem(item_id):
     if 'username' in login_session:
         username = login_session['username']
     return render_template('item.html', item=item, catalog=catalog,
-                        username=username)
+                        username=username, title='Catalog Items')
 # Edit item
 @app.route('/catalog/item/<int:item_id>/edit', methods=['GET', 'POST'])
 def editItem(item_id):
@@ -281,7 +282,7 @@ def editItem(item_id):
         return redirect(url_for('showItem', item_id=item_id))
     else:
         return render_template('edititem.html', catalog=catalog, item=editedItem,
-                            username=username)
+                            username=username, title='Edit Item')
 
 # Delete a menu item
 @app.route('/catalog/item/<int:item_id>/delete', methods=['GET', 'POST'])
@@ -296,7 +297,7 @@ def deleteItem(item_id):
         return redirect(url_for('showCatalog'))
     else:
         return render_template('deleteItem.html', item=itemToDelete,
-                            username=username)
+                            username=username, title='Delete Item')
 
 
 if __name__ == '__main__':
