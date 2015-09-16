@@ -14,8 +14,10 @@ import httplib2
 import json
 from flask import make_response
 import requests
+from flask.ext.seasurf import SeaSurf
 
 app = Flask(__name__)
+csrf = SeaSurf(app)
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
@@ -193,6 +195,14 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+
+# Decorator Function
+def login_check():
+    if 'username' in login_session:
+        return
+    else:
+        return redirect(url_for("login"))
+
 # Show Catalog
 @app.route('/')
 @app.route('/catalog/')
@@ -208,9 +218,8 @@ def showCatalog():
 # Create a new item
 @app.route('/catalog/newitem/', methods=['GET', 'POST'])
 def newItem():
+    login_check()
     username = "" 
-    if 'username' not in login_session:
-        return redirect('/login')
     username = login_session['username']
     catalog = session.query(Catalog).order_by(asc(Catalog.category))
     if request.method == 'POST':
@@ -231,7 +240,7 @@ def newItem():
 @app.route('/catalog/<int:category_id>/')
 def showCategory(category_id):
     catalog = session.query(Catalog).order_by(asc(Catalog.category))
-    category = session.query(Catalog).filter_by(id=category_id).one()
+    category = session.query(Catalog).get(category_id)
     items = session.query(Item).filter_by(
         catalog_id=category_id).all()
     username = ""
@@ -244,7 +253,7 @@ def showCategory(category_id):
 @app.route('/catalog/item/<int:item_id>')
 def showItem(item_id):
     catalog = session.query(Catalog).order_by(asc(Catalog.category))
-    item = session.query(Item).filter_by(id=item_id).one()
+    item = session.query(Item).get(item_id)
     username = ""
     if 'username' in login_session:
         username = login_session['username']
@@ -253,8 +262,7 @@ def showItem(item_id):
 # Edit item
 @app.route('/catalog/item/<int:item_id>/edit', methods=['GET', 'POST'])
 def editItem(item_id):
-    if 'username' not in login_session:
-        return redirect('/login')
+    login_check()
     username = login_session['username']
     editedItem = session.query(Item).filter_by(id=item_id).one()
     catalog = session.query(Catalog).order_by(asc(Catalog.category))
@@ -278,8 +286,7 @@ def editItem(item_id):
 # Delete a menu item
 @app.route('/catalog/item/<int:item_id>/delete', methods=['GET', 'POST'])
 def deleteItem(item_id):
-    if 'username' not in login_session:
-        return redirect('/login')
+    login_check()
     username = login_session['username']
     itemToDelete = session.query(Item).filter_by(id=item_id).one()
     if request.method == 'POST':
