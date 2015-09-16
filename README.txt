@@ -21,6 +21,7 @@ database_setup.py
 db_populate.py
 static/styles.css
 static/bootstrap.css
+templates/base.html
 templates/catalog.html
 templates/category.html
 templates/deleteitem.html
